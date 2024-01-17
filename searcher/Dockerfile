@@ -1,6 +1,10 @@
 FROM python:3.11
 
-ARG GCS_BUCKET
+ARG DATABASE_URL
+ENV DATABASE_URL ${DATABASE_URL}
+
+ARG CERTIFICATE_URL
+ENV CERTIFICATE_URL ${CERTIFICATE_URL}
 
 WORKDIR /app
 
@@ -10,8 +14,10 @@ RUN pip install --no-cache-dir -r ./searcher/requirements.txt
 
 COPY . . 
 
-RUN export $(cat .env | grep -v ^#)
+# 証明書のダウンロード
+RUN curl --create-dirs -o $HOME/.postgresql/root.crt $CERTIFICATE_URL
 
+# modelの学習とビルド
 RUN python -m searcher.build
 
 RUN rm secret/service-account.json

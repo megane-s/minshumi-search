@@ -1,21 +1,25 @@
 steps:
-  # Build the container image
   - name: "bash"
     script: |
-      echo "GCS_BUCKET$GCS_BUCKET"
-      echo "DATABASE_URL$DATABASE_URL"
-    secretEnv: ["GCS_BUCKET", "DATABASE_URL"]
+      echo DATABASE_URL:$DATABASE_URL
+      echo CERTIFICATE_URL:$CERTIFICATE_URL
+      echo GCS_BUCKET:$GCS_BUCKET
+    secretEnv: ["GCS_BUCKET", "DATABASE_URL", "CERTIFICATE_URL"]
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
         "build",
+        "--build-arg",
+        "DATABASE_URL=$DATABASE_URL",
+        "--build-arg",
+        "CERTIFICATE_URL=$CERTIFICATE_URL",
         "-f",
         "searcher/Dockerfile",
         "-t",
         "gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA",
         ".",
       ]
-    secretEnv: ["GCS_BUCKET", "DATABASE_URL"]
+    secretEnv: ["GCS_BUCKET", "DATABASE_URL", "CERTIFICATE_URL"]
   # Push the container image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA"]
@@ -41,3 +45,5 @@ availableSecrets:
       env: GCS_BUCKET
     - versionName: projects/megane-s-gcp/secrets/searcher-database-url/versions/latest
       env: DATABASE_URL
+    - versionName: projects/megane-s-gcp/secrets/searcher-certificate-url/versions/latest
+      env: CERTIFICATE_URL
