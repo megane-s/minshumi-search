@@ -27,8 +27,7 @@ steps:
       - "asia-northeast1"
       - "--service-account=minshumi-search-prod-service"
       - "--set-secrets"
-      - "DATABASE_URL=cockroach-db-prod-url:latest"
-      - "CERTIFICATE_URL=searcher-certificate-url:latest"
+      - "DATABASE_URL=cockroach-db-prod-url:latest,CERTIFICATE_URL=searcher-certificate-url:latest"
       - "--port=8000"
       - "--memory=4Gi"
 images:
