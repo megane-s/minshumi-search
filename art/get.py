@@ -41,15 +41,16 @@ def get_arts_by_search_ids(search_ids: list[int]) -> list[Art]:
         q = q.outerjoin(DbArtTag, DbArt.artId == DbArtTag.artId)
         q = q.filter(DbArt.searchId.in_(search_ids))
         arts = q.all()
-        return [
+        result = [
             Art(
                 art_id=art.artId,  # type: ignore
                 title=art.title,  # type: ignore
                 search_id=art.searchId,  # type: ignore
                 description=art.description,  # type: ignore
-                tags=art.tags,
+                tags=[tag.tag for tag in art.tags],
             ) for art in arts
         ]
+        return result
     return run_transaction(
         sessionmaker(bind=engine),
         lambda s: get_arts(s, search_ids),
