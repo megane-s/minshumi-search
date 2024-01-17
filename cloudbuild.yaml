@@ -30,6 +30,7 @@ steps:
       - "DATABASE_URL=cockroach-db-prod-url:latest"
       - "--port"
       - "8000"
+      - "--memory=3Gi"
 images:
   - "gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA"
 availableSecrets:
