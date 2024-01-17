@@ -1,5 +1,10 @@
 steps:
   # Build the container image
+  - name: "bash"
+    script: |
+      echo "GCS_BUCKET$GCS_BUCKET"
+      echo "DATABASE_URL$DATABASE_URL"
+    secretEnv: ["GCS_BUCKET", "DATABASE_URL"]
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
