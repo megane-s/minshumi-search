@@ -20,7 +20,7 @@ RUN curl --create-dirs -o $HOME/.postgresql/root.crt $CERTIFICATE_URL
 # modelの学習とビルド
 RUN python -m searcher.build
 
-RUN rm secret/service-account.json
+RUN rm -f secret/service-account.json
 # ENV GOOGLE_APPLICATION_CREDENTIALS ""
 
 EXPOSE 8000
