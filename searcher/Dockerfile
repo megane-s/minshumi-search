@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir -r ./searcher/requirements.txt
 COPY . . 
 
 # 証明書のダウンロード
-RUN curl --create-dirs -o $HOME/.postgresql/root.crt $CERTIFICATE_URL
+RUN curl --create-dirs -o /home/.postgresql/root.crt $CERTIFICATE_URL
 
 # modelの学習とビルド
 RUN python -m searcher.build
