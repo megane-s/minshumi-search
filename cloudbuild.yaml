@@ -2,6 +2,7 @@ steps:
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
     args: ["build", "-t", "gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA", "."]
+    secretEnv: ["GCS_BUCKET", "DATABASE_URL"]
   # Push the container image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA"]
@@ -17,11 +18,13 @@ steps:
       - "--region"
       - "asia-northeast1"
       - --service-account="minshumi-search-prod-service"
+      - --set-secret
+      - GCS_BUCKET=searcher-gcs-bucket:latest,DATABASE_URL=searcher-database-url:latest
 images:
   - "gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA"
 availableSecrets:
   secretManager:
     - versionName: projects/megane-s-gcp/secrets/searcher-gcs-bucket/versions/latest
-      env: "GCS_BUCKET"
+      env: GCS_BUCKET
     - versionName: projects/megane-s-gcp/secrets/searcher-database-url/versions/latest
-      env: "DATABASE_URL"
+      env: DATABASE_URL
