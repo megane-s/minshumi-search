@@ -23,6 +23,6 @@ RUN python -m searcher.build
 RUN rm -f secret/service-account.json
 # ENV GOOGLE_APPLICATION_CREDENTIALS ""
 
-# EXPOSE 8000
+EXPOSE 8000
 
-CMD ["uvicorn", "searcher.app:app", "--host", "0.0.0.0", "--port", "$PORT"]
+CMD ["uvicorn", "searcher.app:app", "--host", "0.0.0.0", "--port", "8000"]
