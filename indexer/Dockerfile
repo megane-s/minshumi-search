@@ -9,4 +9,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . . 
 
-CMD ["python", "-m", "indexer.main"]
+CMD ["python", "-m", "indexer.update_shared_index"]

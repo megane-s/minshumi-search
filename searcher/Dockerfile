@@ -10,14 +10,12 @@ RUN pip install --no-cache-dir -r ./searcher/requirements.txt
 
 COPY . . 
 
-ENV GOOGLE_APPLICATION_CREDENTIALS secret/service-account.json
-ENV GCS_BUCKET $GCS_BUCKET
+RUN export $(cat .env | grep -v ^#)
 
 RUN python -m searcher.build
 
 RUN rm secret/service-account.json
-ENV GOOGLE_APPLICATION_CREDENTIALS ""
-
+# ENV GOOGLE_APPLICATION_CREDENTIALS ""
 
 EXPOSE 8000
 

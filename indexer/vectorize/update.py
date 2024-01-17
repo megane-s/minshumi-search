@@ -1,37 +1,32 @@
 import os
 import pathlib
-from typing import cast
 
 import gensim
 
 from indexer.settings import INDEXER_TMP_DIR
 from indexer.vectorize.art import ArtTitleIterable
 from settings import VECTORIZE_MODEL_DIMENSIONS
+from util.log import WithLog
 
-MODEL_PATH = os.path.join(INDEXER_TMP_DIR, "./search/art/fast_text.model")
 
-# TODO
+# MODEL_PATH = os.path.join(INDEXER_TMP_DIR, "./search/art/fast_text.model")
+def get_model_path(base_path: str = INDEXER_TMP_DIR):
+    return os.path.join(base_path, "./search/art/fast_text.model")
+
+
 sentences = ArtTitleIterable()
 
 
-def update_fast_text_model():
+def update_fast_text_model(base_path: str = INDEXER_TMP_DIR):
+
     model = _setup_fast_text_model()
     _train_with_art_data(model)
-    _save(model)
+    _save(model, base_path)
     return model
 
 
 def _setup_fast_text_model():
-    if os.path.exists(MODEL_PATH):
-        print("start load fast text model", MODEL_PATH)
-        model = cast(
-            gensim.models.FastText,
-            gensim.models.FastText.load(MODEL_PATH),
-        )
-        print("finish load save fast text model")
-        return model
-    else:
-        print("init fast text model")
+    with WithLog("init fast text model")as logger:
         model = gensim.models.FastText(
             sentences=sentences,
             vector_size=VECTORIZE_MODEL_DIMENSIONS,
@@ -39,23 +34,20 @@ def _setup_fast_text_model():
             min_count=1,
             workers=4,
         )
-        print("finish init fast text model")
         return model
 
 
 def _train_with_art_data(model: gensim.models.FastText):
-    print("start train fast text model")
-    model.train(
-        sentences,
-        total_examples=2,
-        epochs=1,
-    )
-    print("finish train fast text model")
+    with WithLog("train fast text model") as logger:
+        model.train(
+            sentences,
+            total_examples=2,
+            epochs=1,
+        )
 
 
-def _save(model: gensim.models.FastText):
-    parent = pathlib.Path(MODEL_PATH).parent
-    print("start save fast text model", parent)
-    os.makedirs(parent, exist_ok=True)
-    model.save(MODEL_PATH)
-    print("finish save fast text model")
+def _save(model: gensim.models.FastText, path: str = INDEXER_TMP_DIR):
+    parent = pathlib.Path(get_model_path(path)).parent
+    with WithLog("save fast text model") as logger:
+        os.makedirs(parent, exist_ok=True)
+        model.save(get_model_path(path))
