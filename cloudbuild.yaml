@@ -27,13 +27,11 @@ steps:
       - "asia-northeast1"
       - "--service-account=minshumi-search-prod-service"
       - --set-secrets
-      - GCS_BUCKET=searcher-gcs-bucket:latest,DATABASE_URL=cockroach-db-prod-url:latest
+      - DATABASE_URL=cockroach-db-prod-url:latest
 images:
   - "gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA"
 availableSecrets:
   secretManager:
-    - versionName: projects/megane-s-gcp/secrets/searcher-gcs-bucket/versions/latest
-      env: GCS_BUCKET
     - versionName: projects/megane-s-gcp/secrets/cockroach-db-prod-url/versions/latest
       env: DATABASE_URL
     - versionName: projects/megane-s-gcp/secrets/searcher-certificate-url/versions/latest
