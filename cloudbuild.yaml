@@ -28,9 +28,8 @@ steps:
       - "--service-account=minshumi-search-prod-service"
       - "--set-secrets"
       - "DATABASE_URL=cockroach-db-prod-url:latest"
-      - "--port"
-      - "8000"
-      - "--memory=3Gi"
+      - "--port=8000"
+      - "--memory=4Gi"
 images:
   - "gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA"
 availableSecrets:
