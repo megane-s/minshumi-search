@@ -1,7 +1,15 @@
 steps:
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA", "."]
+    args:
+      [
+        "build",
+        "-f",
+        "searcher/Dockerfile",
+        "-t",
+        "gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA",
+        ".",
+      ]
     secretEnv: ["GCS_BUCKET", "DATABASE_URL"]
   # Push the container image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
