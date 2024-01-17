@@ -32,7 +32,7 @@ steps:
       - "--region"
       - "asia-northeast1"
       - --service-account="minshumi-search-prod-service"
-      - --set-secret
+      - --set-secrets
       - GCS_BUCKET=searcher-gcs-bucket:latest,DATABASE_URL=cockroach-db-prod-url:latest
 images:
   - "gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA"
