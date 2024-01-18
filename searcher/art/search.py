@@ -48,7 +48,10 @@ def search_art(q: str):
     vectors = map(lambda q_word: text_to_vector(model, q_word), q_words)
     # ベクトルをそれぞれ検索
     global search_index
-    query_results = map(lambda q_vec: search_index.query(q_vec, k=5), vectors)
+    query_results = map(
+        lambda q_vec: search_index.query(q_vec, k=min(5, len(search_index))),
+        vectors,
+    )
     # 整形
     output = []
     for query_result in query_results:
