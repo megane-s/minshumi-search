@@ -1,4 +1,6 @@
 
+from functools import cache
+
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy_cockroachdb import run_transaction
 
@@ -7,6 +9,7 @@ from art.type import Art
 from db.engine import get_engine
 
 
+@cache
 def get_all_arts() -> list[Art]:
     def get_arts(session: Session):
         res = session.query(DbArt).all()
