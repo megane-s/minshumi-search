@@ -34,7 +34,6 @@ def get_art_by_search_id(search_id: int):
 
 
 def get_arts_by_search_ids(search_ids: list[int]) -> list[Art]:
-    print("get_arts_by_search_ids", search_ids)
     engine = get_engine()
 
     def get_arts(session: Session, search_ids: list[int]) -> list[Art]:

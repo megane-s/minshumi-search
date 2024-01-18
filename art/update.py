@@ -23,7 +23,6 @@ class UpdateArtSearchIdBatch:
             for art in arts:
                 new_search_id = self._updates[art.artId]  # type: ignore
                 art.searchId = new_search_id  # type: ignore
-                print("update art", art.artId, "searchId", new_search_id)
         return run_transaction(
             sessionmaker(bind=engine),
             lambda s: update(s),
