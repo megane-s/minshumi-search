@@ -25,7 +25,7 @@ uvicorn searcher.app:app --host 0.0.0.0 --port 8000 --reload
 または以下でも起動できます。
 
 ```
-python -m searcher.build && uvicorn searcher.app:app --host 0.0.0.0 --port 8000 --reload
+sh dev.sh
 ```
 
 ## Docker
