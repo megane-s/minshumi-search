@@ -6,6 +6,7 @@ import numpy as np
 import voyager
 
 from art.get import get_arts_by_search_ids
+from searcher.art.type import SearchResultArt
 from searcher.settings import SEARCHER_TMP_DIR
 from text_vectorize.to_vector import text_to_vector
 
@@ -57,5 +58,10 @@ def search_art(q: str):
         )
         neighbors = get_arts_by_search_ids(neighbors.tolist())
         # TODO distanceが低いものは無視
-        output += neighbors
+        output += [
+            SearchResultArt.from_art(
+                neighbor,
+                distance=float(distances[i]),
+            ) for i, neighbor in enumerate(neighbors)
+        ]
     return output

@@ -3,8 +3,10 @@ import pathlib
 
 import gensim
 
+from art.type import Art
 from indexer.settings import INDEXER_TMP_DIR
-from indexer.vectorize.art import ArtTitleIterable
+from indexer.vectorize.art import ArtIterable
+from indexer.word_split.split import split_text
 from settings import VECTORIZE_MODEL_DIMENSIONS
 from util.log import WithLog
 
@@ -14,7 +16,16 @@ def get_model_path(base_path: str = INDEXER_TMP_DIR):
     return os.path.join(base_path, "./search/art/fast_text.model")
 
 
-sentences = ArtTitleIterable()
+def art_to_words(art: Art):
+    res = [
+        *split_text(art.title),
+        *split_text(art.description),
+        *art.tags,
+    ]
+    return res
+
+
+sentences = map(lambda art: art_to_words(art), ArtIterable())
 
 
 def update_fast_text_model(base_path: str = INDEXER_TMP_DIR):
