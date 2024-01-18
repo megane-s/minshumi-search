@@ -14,9 +14,18 @@ Cloud Run Job で定期実行するために利用します。
 
 Cloud Run Service で WebAPI サーバとして利用します。
 
+デバッグサーバは以下の通り起動します。
+（model の学習が必要なので searcher.build で model を学習&保存してから検索サーバを起動する）
+
 ```
 python -m searcher.build # Indexなどをダウンロードする
 uvicorn searcher.app:app --host 0.0.0.0 --port 8000 --reload
+```
+
+または以下でも起動できます。
+
+```
+python -m searcher.build && uvicorn searcher.app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 ## Docker
