@@ -16,7 +16,7 @@ def get_all_arts() -> list[Art]:
                 title=art.title,  # type: ignore
                 description=art.description,  # type: ignore
                 search_id=art.searchId,  # type: ignore
-                tags=art.tags,
+                tags=[tag.tag for tag in art.tags],
             ) for art in res
         ]
     engine = get_engine()
