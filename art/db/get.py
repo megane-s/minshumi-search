@@ -1,10 +1,11 @@
 
 from functools import cache
+from typing import Any, Generator
 
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy_cockroachdb import run_transaction
 
-from art.db import DbArt, DbArtTag
+from art.db.model import DbArt, DbArtTag
 from art.type import Art
 from db.engine import get_engine
 
@@ -14,7 +15,7 @@ class AllArts:
         self.arts_per_unit = arts_per_unit
         self.limit = limit
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Art, Any, None]:
         def get_arts_iter(session: Session):
             i = 0
             rest = self.limit

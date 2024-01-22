@@ -2,7 +2,7 @@
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy_cockroachdb import run_transaction
 
-from art.db import DbArt
+from art.db.model import DbArt
 from db.engine import get_engine
 
 
