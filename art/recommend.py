@@ -33,7 +33,6 @@ def update_recommend_index():
             *split_text(art.description),
             *art.tags,
         ])
-        # art_vec = vec_model.dv[texts]
         art_vec = vec_model.dv[art.art_id]
         search_id = art_search_index.add_item(art_vec)
         # TODO Update art search id
