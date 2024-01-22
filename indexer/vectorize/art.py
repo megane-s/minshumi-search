@@ -1,5 +1,5 @@
 
-from art.get import get_all_arts
+from art.get import AllArts
 
 
 class ArtTitleIterable:
@@ -8,8 +8,14 @@ class ArtTitleIterable:
             yield art.title
 
 
+class ArtTagIterable:
+    def __iter__(self):
+        for art in ArtIterable():
+            yield art.tags
+
+
 class ArtIterable:
     # TODO
     def __iter__(self):
-        for art in get_all_arts():
+        for art in AllArts():
             yield art

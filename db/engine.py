@@ -2,10 +2,14 @@ import logging
 import os
 from functools import cache
 
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
-logging.basicConfig()
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+load_dotenv()
+
+if os.environ.get("LOG_DB", default="FALSE").upper() == "TRUE":
+    logging.basicConfig()
+    logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 
 @cache

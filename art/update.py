@@ -21,6 +21,7 @@ class UpdateArtSearchIdBatch:
             q = q.filter(DbArt.artId.in_(self._update_art_ids()))
             arts = q.all()
             for art in arts:
+                print("update search id", art.artId)
                 new_search_id = self._updates[art.artId]  # type: ignore
                 art.searchId = new_search_id  # type: ignore
         return run_transaction(

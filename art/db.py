@@ -1,7 +1,7 @@
 
 import enum
 
-from sqlalchemy import Column, Enum, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -20,6 +20,9 @@ class DbArt(Base):
     searchId = Column(Integer, nullable=True)
 
     tags = relationship("DbArtTag", backref="parent", lazy=False)
+
+    createAt = Column(DateTime)
+    updateAt = Column(DateTime)
 
 
 class DbArtTagType(enum.Enum):

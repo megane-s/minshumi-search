@@ -9,6 +9,42 @@ from art.type import Art
 from db.engine import get_engine
 
 
+class AllArts:
+    def __init__(self, arts_per_unit: int = 100, limit: int = 1_000) -> None:
+        self.arts_per_unit = arts_per_unit
+        self.limit = limit
+
+    def __iter__(self):
+        def get_arts_iter(session: Session):
+            i = 0
+            rest = self.limit
+            while True:
+                if rest <= 0:
+                    break
+                arts_unit = session.query(DbArt) \
+                    .order_by(DbArt.updateAt) \
+                    .offset(i * self.arts_per_unit) \
+                    .limit(min(self.arts_per_unit, rest))\
+                    .all()
+                for art in arts_unit:
+                    yield Art(
+                        art_id=art.artId,  # type: ignore
+                        title=art.title,  # type: ignore
+                        description=art.description,  # type: ignore
+                        search_id=art.searchId,  # type: ignore
+                        tags=[tag.tag for tag in art.tags],
+                    )
+                if len(arts_unit) != self.arts_per_unit:
+                    break
+                rest -= len(arts_unit)
+                i += 1
+        engine = get_engine()
+        return run_transaction(
+            sessionmaker(bind=engine),
+            lambda s: get_arts_iter(s),
+        )
+
+
 @cache
 def get_all_arts() -> list[Art]:
     def get_arts(session: Session):
