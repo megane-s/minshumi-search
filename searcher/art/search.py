@@ -5,7 +5,7 @@ import gensim
 import numpy as np
 import voyager
 
-from art.get import get_arts_by_search_ids
+from art.db.get import get_arts_by_search_ids
 from searcher.art.type import SearchResultArt
 from searcher.settings import SEARCHER_TMP_DIR
 from text_vectorize.to_vector import text_to_vector
