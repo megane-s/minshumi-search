@@ -7,12 +7,14 @@ from pathlib import Path
 import gensim
 import numpy as np
 
-from art.db.get import AllArts
+from art.db.get import ArtsIter
 from art.index.split_word import split_text
+
+ART_VECTOR_DIMENSIONS = 300
 
 
 @cache
-def get_art_vectorize_model():
+def get_art_vectorize_model(arts: ArtsIter = ArtsIter()):
     model = gensim.models.Doc2Vec(
         documents=[
             gensim.models.doc2vec.TaggedDocument(
@@ -22,9 +24,9 @@ def get_art_vectorize_model():
                     *split_text(art.description),
                 ],
                 [art.art_id],
-            ) for art in AllArts()
+            ) for art in arts
         ],
-        vector_size=300,
+        vector_size=ART_VECTOR_DIMENSIONS,
         window=5,
         min_count=1,
         workers=4,

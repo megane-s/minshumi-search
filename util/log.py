@@ -19,7 +19,7 @@ class WithLog:
         print_time: bool = True,
         start_label: str = "⭐️ start ::",
         end_label: str = "✅ finish ::",
-        indent_text: str = "  ",
+        indent_text: str = "| ",
     ) -> None:
         self.label = label
         self.print_log = print_log
@@ -35,7 +35,7 @@ class WithLog:
 
         if self.print_log:
             print(
-                self.indent_text * (self.get_depth()),
+                self.indent_text * (self.get_depth()) +
                 self.start_label,
                 self.label,
             )
