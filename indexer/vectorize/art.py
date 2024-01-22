@@ -1,5 +1,5 @@
 
-from art.get import AllArts
+from art.db.get import AllArts
 
 
 class ArtTitleIterable:

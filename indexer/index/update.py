@@ -3,7 +3,7 @@ import os
 import gensim
 import voyager
 
-from art.update import UpdateArtSearchIdBatch
+from art.db.update import UpdateArtSearchIdBatch
 from indexer.settings import INDEXER_TMP_DIR
 from indexer.vectorize.art import ArtIterable
 from settings import VECTORIZE_MODEL_DIMENSIONS
@@ -14,7 +14,6 @@ from util.log import WithLog
 
 
 def get_search_index_path(base_path: str = INDEXER_TMP_DIR):
-    print("get_search_index_path", base_path)
     return os.path.join(base_path, "search/art", "index.voy")
 
 
