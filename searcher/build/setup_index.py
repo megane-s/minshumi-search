@@ -1,6 +1,8 @@
-from indexer.update_local_index import update_local_index
+from art.recommend import update_recommend_index
 from searcher.settings import SEARCHER_TMP_DIR
+from util.log import WithLog
 
 
 def setup_index():
-    update_local_index(SEARCHER_TMP_DIR)
+    with WithLog("ビルド"):
+        update_recommend_index()

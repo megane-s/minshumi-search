@@ -19,7 +19,7 @@ def get_search_index_path(base_path: str = DATA_BASE_DIR):
     return os.path.join(base_path, "search/art", "index.voy")
 
 
-def update_index():
+def update_recommend_index():
     vec_model = get_art_vectorize_model()
     art_search_index = Index(
         Space.Euclidean,
@@ -43,9 +43,6 @@ def update_index():
             "texts": texts,
             "searchId": search_id,
         })
-
-    with open("./arts.json", "w") as f:
-        json.dump(outputs, f, ensure_ascii=False)
 
     os.makedirs(Path(get_search_index_path()).parent, exist_ok=True)
     art_search_index.save(get_search_index_path())
