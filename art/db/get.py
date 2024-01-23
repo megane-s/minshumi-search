@@ -1,5 +1,4 @@
 
-from functools import cache
 from os import getenv
 from typing import Any, Callable, Generator
 
@@ -34,7 +33,7 @@ class ArtsIter:
                     q = session.query(DbArt)
                     q = self.query(q)
                     arts_unit = q \
-                        .order_by(DbArt.updateAt) \
+                        .order_by(DbArt.updateAt.desc()) \
                         .offset(i * self.arts_per_unit) \
                         .limit(min(self.arts_per_unit, rest))\
                         .all()
@@ -53,7 +52,7 @@ class ArtsIter:
 
 def get_art_by_recommend_id(recommend_id: int):
     arts = get_arts_by_recommend_ids([recommend_id])
-    if len(arts) == 0:
+    if len(arts) == 0 or arts[0] is None:
         return None
     return arts[0]
 
@@ -61,16 +60,17 @@ def get_art_by_recommend_id(recommend_id: int):
 def get_arts_by_recommend_ids(recommend_ids: list[int]) -> list[Art]:
     engine = get_engine()
 
-    def get_arts(session: Session, recommend_ids: list[int]) -> list[Art]:
-        q = session.query(DbArt)
-        q = q.outerjoin(DbArtTag, DbArt.artId == DbArtTag.artId)
-        q = q.filter(DbArt.recommendId.in_(recommend_ids))
-        arts = q.all()
-        result = []
-        for s_id in recommend_ids:
-            for art in arts:
-                if s_id == art.recommendId:
-                    result.append(art.to_art())
+    def get_arts(session: Session, recommend_ids: list[int]) -> list[Art | None]:
+        def get_art(recommend_id: int):
+            art = session.query(DbArt) \
+                .filter(DbArt.recommendId == recommend_id) \
+                .first()
+            if art is None:
+                return None
+            return art.to_art()
+        result = [
+            get_art(recommend_id) for recommend_id in recommend_ids
+        ]
         return result
     return run_transaction(
         sessionmaker(bind=engine),

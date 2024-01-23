@@ -83,7 +83,7 @@ class GetRecommendArtResultItem:
     distance: float
 
 
-def get_recommend_art_by_art_id(art_id: str):
+def get_recommend_art_by_art_id(art_id: str, limit: int = 50):
     index = get_recommend_index()
     vec_model = get_vec_model()
     if art_id not in vec_model.dv:
@@ -91,11 +91,11 @@ def get_recommend_art_by_art_id(art_id: str):
     with WithLog("recommend"):
         neighbors, distances = index.query(
             vec_model.dv[art_id],
-            k=min(len(index), 20),
+            k=min(len(index), limit),
         )
-    with WithLog(f"fetch art data"):
+    with WithLog(f"fetch art data") as logger:
         arts = get_arts_by_recommend_ids(neighbors.tolist())
-    return [GetRecommendArtResultItem(art, float(distances[i])) for i, art in enumerate(arts)]
+    return [GetRecommendArtResultItem(art, float(distances[i])) for i, art in enumerate(arts)][1:]
 
 
 def get_recommend_art_by_tag(tag: str):
