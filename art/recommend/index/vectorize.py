@@ -20,7 +20,7 @@ def get_art_vectorize_model(arts: ArtsIter = ArtsIter()):
             gensim.models.doc2vec.TaggedDocument(
                 [
                     *split_text(art.title),
-                    *split_text(art.description),
+                    # *split_text(art.description),
                     *art.tags,
                 ],
                 [art.art_id, *art.tags],

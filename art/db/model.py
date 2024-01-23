@@ -5,6 +5,7 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
+from art.type import Art
 from db.base import Base
 
 # DBの定義は以下を参照
@@ -24,6 +25,15 @@ class DbArt(Base):
 
     createAt = Column(DateTime)
     updateAt = Column(DateTime)
+
+    def to_art(self):
+        return Art(
+            art_id=self.artId,  # type: ignore
+            title=self.title,  # type: ignore
+            recommend_id=self.recommendId,  # type: ignore
+            description=self.description,  # type: ignore
+            tags=[tag.tag for tag in self.tags],
+        )
 
 
 class DbArtTagType(enum.Enum):

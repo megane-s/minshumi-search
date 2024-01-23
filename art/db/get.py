@@ -39,13 +39,7 @@ class ArtsIter:
                         .limit(min(self.arts_per_unit, rest))\
                         .all()
                     for art in arts_unit:
-                        yield Art(
-                            art_id=art.artId,  # type: ignore
-                            title=art.title,  # type: ignore
-                            description=art.description,  # type: ignore
-                            recommend_id=art.recommendId,  # type: ignore
-                            tags=[tag.tag for tag in art.tags],
-                        )
+                        yield art.to_art()
                     if len(arts_unit) != self.arts_per_unit:
                         break
                     rest -= len(arts_unit)
@@ -76,13 +70,7 @@ def get_arts_by_recommend_ids(recommend_ids: list[int]) -> list[Art]:
         for s_id in recommend_ids:
             for art in arts:
                 if s_id == art.recommendId:
-                    result.append(Art(
-                        art_id=art.artId,  # type: ignore
-                        title=art.title,  # type: ignore
-                        recommend_id=art.recommendId,  # type: ignore
-                        description=art.description,  # type: ignore
-                        tags=[tag.tag for tag in art.tags],
-                    ))
+                    result.append(art.to_art())
         return result
     return run_transaction(
         sessionmaker(bind=engine),
