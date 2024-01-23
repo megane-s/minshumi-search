@@ -68,6 +68,27 @@ def get_search_index():
     return _index
 
 
+def load_vec_model():
+    with WithLog("load vec model"):
+        global _vec_model
+        _vec_model = cast(
+            gensim.models.Doc2Vec,
+            gensim.models.Doc2Vec.load(
+                "./tmp/search/art/vectorize/art.model"
+            ),
+        )
+
+
+def get_vec_model():
+    global _vec_model
+    return _vec_model
+
+
+def init_for_recommend():
+    load_search_index()
+    load_vec_model()
+
+
 @dataclass
 class GetRecommendArtResultItem:
     art: Art
@@ -76,37 +97,19 @@ class GetRecommendArtResultItem:
 
 def get_recommend_art_by_art_id(art_id: str):
     index = get_search_index()
-    with WithLog("load vec model"):
-        vec_model = cast(
-            gensim.models.Doc2Vec,
-            gensim.models.Doc2Vec.load(
-                "./tmp/search/art/vectorize/art.model"
-            ),
-        )
-        if art_id not in vec_model.dv:
-            return None
+    vec_model = get_vec_model()
+    if art_id not in vec_model.dv:
+        return None
+    with WithLog("search"):
         neighbors, distances = index.query(
             vec_model.dv[art_id],
             k=min(len(index), 20),
         )
+    with WithLog(f"fetch art data"):
         arts = get_arts_by_search_ids(neighbors.tolist())
-        return [GetRecommendArtResultItem(art, distances[i]) for i, art in enumerate(arts)]
+    return [GetRecommendArtResultItem(art, distances[i]) for i, art in enumerate(arts)]
 
 
 def get_recommend_art_by_tag(tag: str):
-    index = get_search_index()
-    with WithLog("load vec model"):
-        vec_model = cast(
-            gensim.models.Doc2Vec,
-            gensim.models.Doc2Vec.load(
-                "./tmp/search/art/vectorize/art.model"
-            ),
-        )
-        if tag not in vec_model.dv:
-            return None
-        neighbors, distances = index.query(
-            vec_model.dv[tag],
-            k=min(len(index), 20),
-        )
-        arts = get_arts_by_search_ids(neighbors.tolist())
-        return [GetRecommendArtResultItem(art, distances[i]) for i, art in enumerate(arts)]
+    # 中身のやることは同じなのでart_id版を呼び出し
+    return get_recommend_art_by_art_id(tag)

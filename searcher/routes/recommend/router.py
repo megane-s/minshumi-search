@@ -3,13 +3,13 @@ from contextlib import asynccontextmanager
 
 from fastapi import APIRouter, FastAPI
 
-from art.recommend import get_recommend_art_by_art_id, load_search_index
+from art.recommend import get_recommend_art_by_art_id, init_for_recommend
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("start")
-    load_search_index()
+    init_for_recommend()
     yield
     print("end")
 

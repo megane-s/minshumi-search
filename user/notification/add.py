@@ -12,6 +12,7 @@ def add_notifications(notifications: list[Notification]):
             DbNotification.from_notification(notification)
             for notification in notifications
         )
+        # TODO 端末に通知を送信
     return run_transaction(
         sessionmaker(bind=get_engine()),
         add,

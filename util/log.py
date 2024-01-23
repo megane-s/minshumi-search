@@ -54,7 +54,7 @@ class WithLog:
                     print(f"⚠️ invalid depth {self.depth} . set 1 .")
                     self.depth = 1
                 print(
-                    self.indent_text * (self.depth),
+                    self.indent_text * (self.depth) +
                     self.end_label,
                     self.label,
                     f"time={self.end_time - self.start_time}s",
