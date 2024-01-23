@@ -1,4 +1,4 @@
-from art.recommend import update_recommend_index
+from art.recommend.recommend import update_recommend_index
 from searcher.settings import SEARCHER_TMP_DIR
 from util.log import WithLog
 

@@ -1,8 +1,9 @@
 
 from uuid import uuid4
 
-from art.recommend import (GetRecommendArtResultItem, get_recommend_art_by_tag,
-                           init_for_recommend)
+from art.recommend.recommend import (GetRecommendArtResultItem,
+                                     get_recommend_art_by_tag,
+                                     init_for_recommend)
 from user.db.get import UsersIter
 from user.notification.add import add_notifications
 from user.notification.get import has_recommend_notifications

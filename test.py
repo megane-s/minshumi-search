@@ -1,6 +1,6 @@
 
-from art.recommend import (get_recommend_index, get_vec_model,
-                           init_for_recommend)
+from art.recommend.recommend import (get_recommend_index, get_vec_model,
+                                     init_for_recommend)
 
 
 def main():

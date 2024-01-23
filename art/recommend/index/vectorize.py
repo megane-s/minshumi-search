@@ -8,7 +8,7 @@ import gensim
 import numpy as np
 
 from art.db.get import ArtsIter
-from art.index.split_word import split_text
+from art.recommend.index.split_word import split_text
 
 ART_VECTOR_DIMENSIONS = 300
 

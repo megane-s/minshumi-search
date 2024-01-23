@@ -11,8 +11,8 @@ from voyager import Index, Space
 
 from art.db.get import ArtsIter, get_arts_by_recommend_ids
 from art.db.update import UpdateArtSearchIdBatch
-from art.index.split_word import split_text
-from art.index.vectorize import ART_VECTOR_DIMENSIONS, get_art_vectorize_model
+from art.recommend.index.vectorize import (ART_VECTOR_DIMENSIONS,
+                                           get_art_vectorize_model)
 from art.type import Art
 from settings import DATA_BASE_DIR
 from util.log import WithLog

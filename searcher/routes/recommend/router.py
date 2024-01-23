@@ -1,7 +1,8 @@
 
 from fastapi import APIRouter
 
-from art.recommend import get_recommend_art_by_art_id, init_for_recommend
+from art.recommend.recommend import (get_recommend_art_by_art_id,
+                                     init_for_recommend)
 
 init_for_recommend()
 
