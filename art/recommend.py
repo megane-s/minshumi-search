@@ -80,7 +80,7 @@ def init_for_recommend():
 @dataclass
 class GetRecommendArtResultItem:
     art: Art
-    distance: int
+    distance: float
 
 
 def get_recommend_art_by_art_id(art_id: str):
@@ -95,7 +95,7 @@ def get_recommend_art_by_art_id(art_id: str):
         )
     with WithLog(f"fetch art data"):
         arts = get_arts_by_recommend_ids(neighbors.tolist())
-    return [GetRecommendArtResultItem(art, distances[i]) for i, art in enumerate(arts)]
+    return [GetRecommendArtResultItem(art, float(distances[i])) for i, art in enumerate(arts)]
 
 
 def get_recommend_art_by_tag(tag: str):
