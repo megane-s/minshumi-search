@@ -1,21 +1,11 @@
 
-from contextlib import asynccontextmanager
-
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter
 
 from art.recommend import get_recommend_art_by_art_id, init_for_recommend
 
+init_for_recommend()
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    print("start")
-    init_for_recommend()
-    yield
-    print("end")
-
-
-# recommend = APIRouter(prefix="/recommend")
-recommend = APIRouter(prefix="/recommend",  lifespan=lifespan)
+recommend = APIRouter(prefix="/recommend")
 
 
 @recommend.get("/art")
