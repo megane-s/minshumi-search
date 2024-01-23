@@ -17,6 +17,8 @@ COPY . .
 # 証明書のダウンロード
 RUN curl --create-dirs -o /home/.postgresql/root.crt $CERTIFICATE_URL
 
+RUN python -m scheduled_recommend.build
+
 RUN rm -f secret/service-account.json
 # ENV GOOGLE_APPLICATION_CREDENTIALS ""
 
