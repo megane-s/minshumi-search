@@ -1,6 +1,7 @@
 
 import json
 import os
+from dataclasses import dataclass
 from itertools import tee
 from pathlib import Path
 from typing import cast
@@ -8,10 +9,11 @@ from typing import cast
 import gensim
 from voyager import Index, Space
 
-from art.db.get import ArtsIter
+from art.db.get import ArtsIter, get_arts_by_search_ids
 from art.db.update import UpdateArtSearchIdBatch
 from art.index.split_word import split_text
 from art.index.vectorize import ART_VECTOR_DIMENSIONS, get_art_vectorize_model
+from art.type import Art
 from settings import DATA_BASE_DIR
 from util.log import WithLog
 
@@ -66,9 +68,13 @@ def get_search_index():
     return _index
 
 
-def get_recommend_art(art_id: str):
-    with WithLog("load search index"):
-        load_search_index()
+@dataclass
+class GetRecommendArtResultItem:
+    art: Art
+    distance: int
+
+
+def get_recommend_art_by_art_id(art_id: str):
     index = get_search_index()
     with WithLog("load vec model"):
         vec_model = cast(
@@ -77,10 +83,30 @@ def get_recommend_art(art_id: str):
                 "./tmp/search/art/vectorize/art.model"
             ),
         )
+        if art_id not in vec_model.dv:
+            return None
         neighbors, distances = index.query(
             vec_model.dv[art_id],
             k=min(len(index), 20),
         )
-        print("search result: neighbors:", neighbors)
-        print("search result: distances:", distances)
-        return []
+        arts = get_arts_by_search_ids(neighbors.tolist())
+        return [GetRecommendArtResultItem(art, distances[i]) for i, art in enumerate(arts)]
+
+
+def get_recommend_art_by_tag(tag: str):
+    index = get_search_index()
+    with WithLog("load vec model"):
+        vec_model = cast(
+            gensim.models.Doc2Vec,
+            gensim.models.Doc2Vec.load(
+                "./tmp/search/art/vectorize/art.model"
+            ),
+        )
+        if tag not in vec_model.dv:
+            return None
+        neighbors, distances = index.query(
+            vec_model.dv[tag],
+            k=min(len(index), 20),
+        )
+        arts = get_arts_by_search_ids(neighbors.tolist())
+        return [GetRecommendArtResultItem(art, distances[i]) for i, art in enumerate(arts)]

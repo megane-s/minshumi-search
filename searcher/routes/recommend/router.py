@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import APIRouter, FastAPI
 
-from art.recommend import get_recommend_art, load_search_index
+from art.recommend import get_recommend_art_by_art_id, load_search_index
 
 
 @asynccontextmanager
@@ -20,5 +20,5 @@ recommend = APIRouter(prefix="/recommend",  lifespan=lifespan)
 
 @recommend.get("/art")
 async def recommend_art_route(art_id: str):
-    recommend_arts = get_recommend_art(art_id)
+    recommend_arts = get_recommend_art_by_art_id(art_id)
     return recommend_arts

@@ -57,26 +57,6 @@ class ArtsIter:
         )
 
 
-@cache
-def get_all_arts() -> list[Art]:
-    def get_arts(session: Session):
-        res = session.query(DbArt).all()
-        return [
-            Art(
-                art_id=art.artId,  # type: ignore
-                title=art.title,  # type: ignore
-                description=art.description,  # type: ignore
-                search_id=art.searchId,  # type: ignore
-                tags=[tag.tag for tag in art.tags],
-            ) for art in res
-        ]
-    engine = get_engine()
-    return run_transaction(
-        sessionmaker(bind=engine),
-        lambda s: get_arts(s),
-    )
-
-
 def get_art_by_search_id(search_id: int):
     arts = get_arts_by_search_ids([search_id])
     if len(arts) == 0:

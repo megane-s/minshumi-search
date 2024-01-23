@@ -23,7 +23,7 @@ def get_art_vectorize_model(arts: ArtsIter = ArtsIter()):
                     *art.tags,
                     *split_text(art.description),
                 ],
-                [art.art_id],
+                [art.art_id, *art.tags],
             ) for art in arts
         ],
         vector_size=ART_VECTOR_DIMENSIONS,
