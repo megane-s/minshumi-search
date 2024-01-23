@@ -5,7 +5,7 @@ import gensim
 import numpy as np
 import voyager
 
-from art.db.get import get_arts_by_search_ids
+from art.db.get import get_arts_by_recommend_ids
 from searcher.art.type import SearchResultArt
 from searcher.settings import SEARCHER_TMP_DIR
 from text_vectorize.to_vector import text_to_vector
@@ -59,7 +59,7 @@ def search_art(q: str):
             tuple[np.ndarray, np.ndarray],
             query_result,
         )
-        neighbors = get_arts_by_search_ids(neighbors.tolist())
+        neighbors = get_arts_by_recommend_ids(neighbors.tolist())
         # TODO distanceが低いものは無視
         output += [
             SearchResultArt.from_art(

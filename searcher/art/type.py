@@ -14,6 +14,6 @@ class SearchResultArt(Art):
             title=art.title,
             description=art.description,
             tags=art.tags,
-            search_id=art.search_id,
+            recommend_id=art.recommend_id,
             distance=distance,
         )

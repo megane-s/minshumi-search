@@ -10,8 +10,8 @@ class UpdateArtSearchIdBatch:
     def __init__(self) -> None:
         self._updates: dict[str, int] = {}
 
-    def update(self, art_id: str, new_search_id: int):
-        self._updates[art_id] = new_search_id
+    def update(self, art_id: str, new_recommend_id: int):
+        self._updates[art_id] = new_recommend_id
 
     def flush(self):
         engine = get_engine()
@@ -21,14 +21,9 @@ class UpdateArtSearchIdBatch:
             q = q.filter(DbArt.artId.in_(self._update_art_ids()))
             arts = q.all()
             for art in arts:
-                new_search_id = self._updates[art.artId]  # type: ignore
-                # print(
-                #     "update search id",
-                #     "artId", art.artId,
-                #     "searchId", new_search_id,
-                # )
-                art.searchId = new_search_id  # type: ignore
-                print(art.artId, new_search_id)
+                new_recommend_id = self._updates[art.artId]  # type: ignore
+                art.recommendId = new_recommend_id  # type: ignore
+                print(art.artId, new_recommend_id)
         return run_transaction(
             sessionmaker(bind=engine),
             lambda s: update(s),

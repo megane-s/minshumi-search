@@ -7,4 +7,4 @@ class Art:
     title: str
     description: str
     tags: list[str]
-    search_id: int
+    recommend_id: int

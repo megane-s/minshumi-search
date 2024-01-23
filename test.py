@@ -1,17 +1,23 @@
-from itertools import tee
+
+from art.recommend import (get_recommend_index, get_vec_model,
+                           init_for_recommend)
 
 
-def my_iter():
-    print("before 1")
-    yield 1
-    print("before 2")
-    yield 2
-    print("before 3")
-    yield 3
+def main():
+    init_for_recommend()
+
+    q = input("q:")
+    model = get_vec_model()
+    if q not in model.wv:
+        print("検索結果なし (vectorize model にありませんでした)")
+        return
+    q_vec = model.wv[q]
+    print("wv", q_vec)
+
+    index = get_recommend_index()
+    n, d = index.query(q_vec, k=20)
+    print(n)
+    print(d)
 
 
-a, b, c, d = tee(my_iter(), 4)
-
-print("for")
-for i in a:
-    print(i)
+main()

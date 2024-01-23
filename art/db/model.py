@@ -17,7 +17,8 @@ class DbArt(Base):
     artId = Column(String, primary_key=True, nullable=False)
     title = Column(String, nullable=False)
     description = Column(String, nullable=False)
-    searchId = Column(Integer, nullable=True)
+
+    recommendId = Column(Integer, nullable=True)
 
     tags = relationship("DbArtTag", backref="parent", lazy=False)
 
