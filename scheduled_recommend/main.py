@@ -7,6 +7,7 @@ from art.recommend.recommend import (GetRecommendArtResultItem,
 from user.db.get import UsersIter
 from user.notification.add import add_notifications
 from user.notification.get import has_recommend_notifications
+from user.recommend.recommend import get_recommendations
 from user.type import Notification
 from util.log import WithLog
 
@@ -34,15 +35,7 @@ for user in UsersIter():
     with WithLog(f"scheduled recommend : user={user.name}(userId={user.id})") as logger:
         logger.print(f"interest tags=({' , '.join(user.interest_tags)})")
         with WithLog("get recommends") as logger:
-            recommend_results: dict[str, GetRecommendArtResultItem] = {}
-            for tag in user.interest_tags:
-                recommend_result = get_recommend_art_by_tag(tag)
-                if recommend_result is None:
-                    continue
-                for item in recommend_result:
-                    if has_recommend_notifications(user.id, item.art.art_id):
-                        continue
-                    recommend_results[item.art.art_id] = item
+            recommend_results = get_recommendations(user)
             logger.print("recommend_results", "user", user.id, "results", [
                 f"{item.art.title}(artId={item.art.art_id},distance={item.distance})"
                 for item in recommend_results.values()
