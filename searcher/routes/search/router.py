@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter
 
-from searcher.art.search import init_for_search, search_art
+from art.search.search import init_for_search, search_art
 
 search = APIRouter(prefix="/search")
 

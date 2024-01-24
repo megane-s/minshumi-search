@@ -33,8 +33,8 @@ def get_art_vectorize_model(arts: ArtsIter = ArtsIter()):
         epochs=20,
     )
     os.makedirs(
-        Path("./tmp/search/art/vectorize/art.model").parent,
+        Path("./tmp/recommend/art/vectorize/art.model").parent,
         exist_ok=True,
     )
-    model.save("./tmp/search/art/vectorize/art.model")
+    model.save("./tmp/recommend/art/vectorize/art.model")
     return model

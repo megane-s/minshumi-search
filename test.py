@@ -1,23 +1,29 @@
+import pickle
+import random
+import time
 
-from art.recommend.recommend import (get_recommend_index, get_vec_model,
-                                     init_for_recommend)
+index = {}
+for i in range(1_000_000):
+    id = f"id-{i}"
+    numbers_len = random.randrange(20)
+    numbers = [f"word-{random.randrange(10)}" for _ in range(numbers_len)]
+    for number in numbers:
+        if str(number) in index:
+            index[str(number)].append(id)
+        else:
+            index[str(number)] = [id]
 
+with open("./index", "wb") as f:
+    pickle.dump(index, f)
 
-def main():
-    init_for_recommend()
+with open('./index', 'rb') as f:
+    index = pickle.load(f)
 
-    q = input("q:")
-    model = get_vec_model()
-    if q not in model.wv:
-        print("検索結果なし (vectorize model にありませんでした)")
-        return
-    q_vec = model.wv[q]
-    print("wv", q_vec)
-
-    index = get_recommend_index()
-    n, d = index.query(q_vec, k=20)
-    print(n)
-    print(d)
-
-
-main()
+while True:
+    q = input("q=")
+    if q == "q":
+        break
+    start = time.time()
+    res = index[q][0:10] if q in index else None
+    end = time.time()
+    print(res, f"{end-start}s")

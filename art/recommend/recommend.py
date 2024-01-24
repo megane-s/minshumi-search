@@ -19,7 +19,7 @@ from util.log import WithLog
 
 
 def get_recommend_index_path(base_path: str = DATA_BASE_DIR):
-    return os.path.join(base_path, "search/art", "index.voy")
+    return os.path.join(base_path, "recommend/art", "index.voy")
 
 
 def update_recommend_index():
@@ -62,7 +62,7 @@ def load_vec_model():
         _vec_model = cast(
             gensim.models.Doc2Vec,
             gensim.models.Doc2Vec.load(
-                "./tmp/search/art/vectorize/art.model"
+                "./tmp/recommend/art/vectorize/art.model"
             ),
         )
 
