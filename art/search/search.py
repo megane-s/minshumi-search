@@ -1,6 +1,7 @@
 
 import os
 import pickle
+import re
 
 from art.db.get import ArtsIter
 from art.db.model import DbArt
@@ -29,12 +30,6 @@ def update_search_index():
             pickle.dump(index, f)
 
 
-def _ngram_split_title(title: str) -> list[str]:
-    return [
-        title
-    ] + split_text(title)
-
-
 def _split_art_words(art: Art):
     result = []
     result += split_text(art.title)
@@ -61,8 +56,7 @@ def ge_search_index():
 
 
 def search_art(q: str):
-    q_words = split_text(q)
-    print(q, ">>", q_words)
+    q_words = re.split(r"\s+", q)
     index = ge_search_index()
     res = []
     for q_w in q_words:
