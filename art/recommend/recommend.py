@@ -94,6 +94,7 @@ def get_recommend_art_by_art_id(art_id: str, limit: int = 50):
             k=min(len(index), limit),
         )
     with WithLog(f"fetch art data") as logger:
+        logger.print("search ids", neighbors)
         arts = get_arts_by_recommend_ids(neighbors.tolist())
     return [GetRecommendArtResultItem(art, float(distances[i])) for i, art in enumerate(arts)][1:]
 
