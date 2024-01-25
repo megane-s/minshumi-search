@@ -7,7 +7,7 @@ from user.notification.get import has_recommend_notifications
 from user.type import User
 
 
-def get_recommendations(user: str | User):
+def get_recommendations(user: str | User, limit: int = 5):
     if isinstance(user, str):
         user = get_user(user)
 
@@ -17,6 +17,8 @@ def get_recommendations(user: str | User):
 
     # 興味のあるタグによる探索
     for tag in user.interest_tags:
+        if len(recommend_results) >= limit:
+            break
         recommend_result = get_recommend_art_by_tag(tag)
         if recommend_result is None:
             continue
