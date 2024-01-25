@@ -31,6 +31,7 @@ steps:
       - "--set-secrets"
       - "DATABASE_URL=searcher-database-url:latest,CERTIFICATE_URL=searcher-certificate-url:latest"
       - "--task-timeout=60m"
+      - "--memory=4Gi"
 images:
   - "gcr.io/$PROJECT_ID/minshumi-notification:$COMMIT_SHA"
 availableSecrets:
