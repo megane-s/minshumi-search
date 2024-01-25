@@ -7,7 +7,7 @@ steps:
         docker build \
           --build-arg DATABASE_URL=$$DATABASE_URL \
           --build-arg CERTIFICATE_URL=$$CERTIFICATE_URL \
-          --build-arg ART_LIST_LIMIT=100000 \
+          --build-arg ART_LIST_LIMIT=30000 \
           -f scheduled_recommend/Dockerfile \
           -t gcr.io/$PROJECT_ID/minshumi-notification:$COMMIT_SHA \
           .
