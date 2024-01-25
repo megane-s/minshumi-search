@@ -1,4 +1,5 @@
 
+import traceback
 from uuid import uuid4
 
 from art.recommend.recommend import (GetRecommendArtResultItem,
@@ -31,20 +32,25 @@ init_for_recommend()
 
 
 for user in UsersIter():
-    print("user", user.name, "interest tags", user.interest_tags)
-    with WithLog(f"scheduled recommend : user={user.name}(userId={user.id})") as logger:
-        logger.print(f"interest tags=({' , '.join(user.interest_tags)})")
-        with WithLog("get recommends") as logger:
-            recommend_results = get_recommendations(user)
-            logger.print("recommend_results", "user", user.id, "results", [
-                f"{item.art.title}(artId={item.art.art_id},distance={item.distance})"
-                for item in recommend_results.values()
-            ])
-        with WithLog("send notifications"):
-            add_notifications(
-                [
-                    recommend_result_to_notification(
-                        user.id, result_item
-                    ) for result_item in recommend_results.values()
-                ]
-            )
+    try:
+        print("user", user.name, "interest tags", user.interest_tags)
+        with WithLog(f"scheduled recommend : user={user.name}(userId={user.id})") as logger:
+            logger.print(f"interest tags=({' , '.join(user.interest_tags)})")
+            with WithLog("get recommends") as logger:
+                recommend_results = get_recommendations(user)
+                logger.print("recommend_results", "user", user.id, "results", [
+                    f"{item.art.title}(artId={item.art.art_id},distance={item.distance})"
+                    for item in recommend_results.values()
+                ])
+            with WithLog("send notifications"):
+                add_notifications(
+                    [
+                        recommend_result_to_notification(
+                            user.id, result_item
+                        ) for result_item in recommend_results.values()
+                    ]
+                )
+    except Exception as e:
+        print("error has occurred")
+        print(e)
+        print(traceback.format_exc())
