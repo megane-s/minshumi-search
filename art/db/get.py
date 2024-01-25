@@ -1,4 +1,5 @@
 
+import pickle
 from os import getenv
 from typing import Any, Callable, Generator
 
@@ -58,21 +59,19 @@ def get_art_by_recommend_id(recommend_id: int):
 
 
 def get_arts_by_recommend_ids(recommend_ids: list[int]) -> list[Art]:
-    engine = get_engine()
+    with open("./tmp/recommend/art/recommend_id_map", "rb") as f:
+        recommend_ids_map: dict[int, str] = pickle.load(f)
+        art_ids = map(lambda r_id: recommend_ids_map[r_id], recommend_ids)
 
-    def get_arts(session: Session, recommend_ids: list[int]) -> list[Art | None]:
-        def get_art(recommend_id: int):
-            art = session.query(DbArt) \
-                .filter(DbArt.recommendId == recommend_id) \
-                .first()
-            if art is None:
-                return None
-            return art.to_art()
-        result = [
-            get_art(recommend_id) for recommend_id in recommend_ids
+    def get_arts(session: Session):
+        return [
+            session
+            .query(DbArt)
+            .where(DbArt.artId == art_id)
+            .first()
+            for art_id in art_ids
         ]
-        return result
     return run_transaction(
-        sessionmaker(bind=engine),
-        lambda s: get_arts(s, recommend_ids),
+        sessionmaker(bind=get_engine()),
+        get_arts,
     )
