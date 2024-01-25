@@ -23,7 +23,6 @@ def update_search_index():
                     index[word].insert(0, art.art_id)
                 else:
                     index[word] = [art.art_id]
-            print(words)
     with WithLog("save search index"):
         os.makedirs("./tmp/search/art/", exist_ok=True)
         with open("./tmp/search/art/index.pickle", "wb") as f:

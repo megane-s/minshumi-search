@@ -14,7 +14,6 @@ from util.log import WithLog
 
 
 def flatten(li: list):
-    print(li)
     return sum(li, [])
 
 
@@ -51,6 +50,6 @@ for user in UsersIter():
                     ]
                 )
     except Exception as e:
-        print("error has occurred")
+        print("❌ error has occurred")
         print(e)
         print(traceback.format_exc())
