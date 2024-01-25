@@ -64,12 +64,17 @@ def get_arts_by_recommend_ids(recommend_ids: list[int]) -> list[Art]:
         art_ids = map(lambda r_id: recommend_ids_map[r_id], recommend_ids)
 
     def get_arts(session: Session):
-        return [
+        arts = map(
+            lambda art_id:
             session
             .query(DbArt)
             .where(DbArt.artId == art_id)
-            .first()
-            for art_id in art_ids
+            .first(),
+            art_ids
+        )
+        return [
+            art.to_art() if art is not None else None
+            for art in arts
         ]
     return run_transaction(
         sessionmaker(bind=get_engine()),
