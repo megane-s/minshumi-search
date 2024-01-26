@@ -1,4 +1,5 @@
 
+import sys
 import traceback
 from uuid import uuid4
 
@@ -51,5 +52,5 @@ for user in UsersIter():
                 )
     except Exception as e:
         print("❌ error has occurred")
-        print(e)
+        print(e, file=sys.stderr)
         print(traceback.format_exc())
