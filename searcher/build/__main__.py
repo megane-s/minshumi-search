@@ -2,7 +2,8 @@
 from dotenv import load_dotenv
 
 from searcher.build.setup_index import setup_index
+from util.log import WithLog
 
-load_dotenv()
-
-setup_index()
+with WithLog("scheduled_recommend.build"):
+    load_dotenv()
+    setup_index()
