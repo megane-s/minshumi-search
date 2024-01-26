@@ -96,7 +96,7 @@ def get_recommend_art_by_art_id(art_id: str, limit: int = 50):
     with WithLog(f"fetch art data") as logger:
         logger.print("search ids", neighbors)
         arts = get_arts_by_recommend_ids(neighbors.tolist())
-    return [GetRecommendArtResultItem(art, float(distances[i])) for i, art in enumerate(arts)][1:]
+    return [GetRecommendArtResultItem(art, float(distances[i])) for i, art in enumerate(filter(lambda a: a is not None, arts))][1:]
 
 
 def get_recommend_art_by_tag(tag: str):
