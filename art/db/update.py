@@ -1,5 +1,5 @@
 
-import pickle
+import joblib
 
 
 class UpdateArtSearchIdBatch:
@@ -11,7 +11,7 @@ class UpdateArtSearchIdBatch:
 
     def flush(self):
         with open("./tmp/recommend/art/recommend_id_map", "wb") as f:
-            pickle.dump(self._updates, f)
+            joblib.dump(self._updates, f)
 
     def _update_art_ids(self):
         return [art_id for art_id in self._updates]

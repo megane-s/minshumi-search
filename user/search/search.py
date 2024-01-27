@@ -1,7 +1,7 @@
 
 import os
-import pickle
 
+import joblib
 from nltk import ngrams
 
 from art.recommend.index.split_word import split_by_ngrams, split_text
@@ -27,8 +27,8 @@ def update_search_index():
                     index[word] = [user.id]
     with WithLog("save search index"):
         os.makedirs("./tmp/search/user/", exist_ok=True)
-        with open("./tmp/search/user/index.pickle", "wb") as f:
-            pickle.dump(index, f)
+        with open("./tmp/search/user/index", "wb") as f:
+            joblib.dump(index, f)
 
 
 def _split_user_words(user: User) -> list[str]:
@@ -51,8 +51,8 @@ def init_for_search_user():
 
 def load_search_index():
     global _search_index
-    with open("./tmp/search/user/index.pickle", "rb") as f:
-        _search_index = pickle.load(f)
+    with open("./tmp/search/user/index", "rb") as f:
+        _search_index = joblib.load(f)
 
 
 def get_search_index():

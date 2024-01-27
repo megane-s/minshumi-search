@@ -1,7 +1,8 @@
 
 import os
-import pickle
 import re
+
+import joblib
 
 from art.db.get import ArtsIter
 from art.db.model import DbArt
@@ -25,8 +26,8 @@ def update_search_index():
                     index[word] = [art.art_id]
     with WithLog("save search index"):
         os.makedirs("./tmp/search/art/", exist_ok=True)
-        with open("./tmp/search/art/index.pickle", "wb") as f:
-            pickle.dump(index, f)
+        with open("./tmp/search/art/index", mode="wb") as f:
+            joblib.dump(index, f, compress=3)
 
 
 def _split_art_words(art: Art):
@@ -48,8 +49,8 @@ def init_for_search_art():
 
 def load_search_index():
     global _search_index
-    with open("./tmp/search/art/index.pickle", "rb") as f:
-        _search_index = pickle.load(f)
+    with open("./tmp/search/art/index", "rb") as f:
+        _search_index = joblib.load(f)
 
 
 def get_search_index():

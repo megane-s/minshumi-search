@@ -1,8 +1,8 @@
 
-import pickle
 from os import getenv
 from typing import Any, Callable, Generator
 
+import joblib
 from sqlalchemy.orm import Query, Session, sessionmaker
 from sqlalchemy_cockroachdb import run_transaction
 
@@ -60,7 +60,7 @@ def get_art_by_recommend_id(recommend_id: int):
 
 def get_arts_by_recommend_ids(recommend_ids: list[int]) -> list[Art]:
     with open("./tmp/recommend/art/recommend_id_map", "rb") as f:
-        recommend_ids_map: dict[int, str] = pickle.load(f)
+        recommend_ids_map: dict[int, str] = joblib.load(f)
         art_ids = map(lambda r_id: recommend_ids_map[r_id], recommend_ids)
 
     def get_arts(session: Session):
