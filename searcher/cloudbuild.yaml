@@ -40,6 +40,6 @@ availableSecrets:
       env: DATABASE_URL
     - versionName: projects/megane-s-gcp/secrets/searcher-certificate-url/versions/latest
       env: CERTIFICATE_URL
+timeout: "7200s"
 options:
   diskSizeGb: "5"
-  timeout: 7200s
