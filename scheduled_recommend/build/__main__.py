@@ -1,7 +1,7 @@
 
 from dotenv import load_dotenv
 
-from searcher.build.setup_index import setup_index
+from scheduled_recommend.build.setup_index import setup_index
 
 from util.log import WithLog
 
