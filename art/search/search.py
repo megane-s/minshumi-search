@@ -5,7 +5,6 @@ import re
 import joblib
 
 from art.db.get import ArtsIter
-from art.db.model import DbArt
 from art.recommend.index.split_word import split_by_ngrams, split_text
 from art.type import Art
 from util.log import WithLog
