@@ -8,6 +8,7 @@ steps:
           --build-arg DATABASE_URL=$$DATABASE_URL \
           --build-arg CERTIFICATE_URL=$$CERTIFICATE_URL \
           --build-arg ART_LIST_LIMIT=100000 \
+          --progress=plain \
           -f searcher/Dockerfile \
           -t gcr.io/$PROJECT_ID/minshumi-search:$COMMIT_SHA \
           .
