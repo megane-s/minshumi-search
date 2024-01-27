@@ -40,4 +40,4 @@ availableSecrets:
     - versionName: projects/megane-s-gcp/secrets/searcher-certificate-url/versions/latest
       env: CERTIFICATE_URL
 options:
-  diskSizeGb: "5"
+  diskSizeGb: "10"
