@@ -49,14 +49,14 @@ def load_search_index():
         _search_index = pickle.load(f)
 
 
-def ge_search_index():
+def get_search_index():
     global _search_index
     return _search_index
 
 
 def search_art(q: str):
     q_words = re.split(r"\s+", q)
-    index = ge_search_index()
+    index = get_search_index()
     res = []
     for q_w in q_words:
         if q_w not in index:
