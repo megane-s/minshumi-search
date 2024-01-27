@@ -30,6 +30,7 @@ def recommend_result_to_notification(user_id: str, recommend_result: GetRecommen
 
 init_for_recommend()
 
+errors = []
 
 for user in UsersIter():
     try:
@@ -52,5 +53,10 @@ for user in UsersIter():
                 )
     except Exception as e:
         print("❌ error has occurred")
-        print(e, file=sys.stderr)
+        print(e)
         print(traceback.format_exc())
+        errors.append(e)
+
+if len(errors) >= 1:
+    print("通知送信時にエラーが発生しました")
+    exit(1)
