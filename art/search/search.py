@@ -36,7 +36,7 @@ def _split_art_words(art: Art):
     result += split_by_ngrams(art.title)
     result += art.tags
     result += split_text(art.description)
-    result += split_by_ngrams(art.description, max=len(art.title))
+    result += split_by_ngrams(art.description, min=10, max=len(art.title))
     return [*set(result)]
 
 # search
