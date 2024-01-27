@@ -5,7 +5,7 @@ import re
 
 from art.db.get import ArtsIter
 from art.db.model import DbArt
-from art.recommend.index.split_word import split_text
+from art.recommend.index.split_word import split_by_ngrams, split_text
 from art.type import Art
 from util.log import WithLog
 
@@ -31,10 +31,13 @@ def update_search_index():
 
 def _split_art_words(art: Art):
     result = []
+    result += [art.art_id]
     result += split_text(art.title)
+    result += split_by_ngrams(art.title)
     result += art.tags
     result += split_text(art.description)
-    return result
+    result += split_by_ngrams(art.description, max=len(art.title))
+    return [*set(result)]
 
 # search
 

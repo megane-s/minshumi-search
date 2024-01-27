@@ -2,7 +2,9 @@
 import os
 import pickle
 
-from art.recommend.index.split_word import split_text
+from nltk import ngrams
+
+from art.recommend.index.split_word import split_by_ngrams, split_text
 from user.db.get import UsersIter
 from user.type import User
 from util.log import WithLog
@@ -15,7 +17,7 @@ def update_search_index():
         index: dict[str, list[str]] = {}
         for user in UsersIter():
             user: User = user
-            words = [*_ngram_split_user_name(user.name), user.id]
+            words = _split_user_words(user)
             for word in words:
                 if word in index:
                     if user.id in index[word]:
@@ -29,10 +31,16 @@ def update_search_index():
             pickle.dump(index, f)
 
 
-def _ngram_split_user_name(title: str) -> list[str]:
-    return [
-        title
-    ] + split_text(title)
+def _split_user_words(user: User) -> list[str]:
+    result: list[str] = []
+    result += [user.id]
+    result += split_text(user.name)
+    result += split_by_ngrams(user.name)
+    for i in range(2, len(user.name)):
+        if 20 <= i:
+            break
+        result += list(ngrams(user.name, i))
+    return [*set(result)]
 
 # search
 
