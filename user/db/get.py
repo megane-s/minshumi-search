@@ -20,10 +20,11 @@ class UsersIter:
         )
 
 
-def get_user(user_id: str) -> User:
+def get_user(user_id: str) -> User | None:
     def get(session: Session):
-        user = session.query(DbUser).where(
-            DbUser.id == user_id).limit(1).first()
+        user = session.query(DbUser) \
+            .where(DbUser.id == user_id) \
+            .limit(1).first()
         return user.to_user() if user is not None else None
     return run_transaction(
         sessionmaker(bind=get_engine()),

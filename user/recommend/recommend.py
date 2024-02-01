@@ -9,7 +9,11 @@ from user.type import User
 
 def get_recommendations(user: str | User, limit: int = 5):
     if isinstance(user, str):
-        user = get_user(user)
+        searched_user = get_user(user)
+        if searched_user is None:
+            return None
+        else:
+            user = searched_user
 
     recommend_results: dict[str, GetRecommendArtResultItem] = {}
 
@@ -23,6 +27,8 @@ def get_recommendations(user: str | User, limit: int = 5):
         if recommend_result is None:
             continue
         for item in recommend_result:
+            if len(recommend_results) >= limit:
+                break
             if has_recommend_notifications(user.id, item.art.art_id):
                 continue
             recommend_results[item.art.art_id] = item
