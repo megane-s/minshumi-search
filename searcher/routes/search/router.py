@@ -9,6 +9,7 @@ from art.search.search import update_search_index as update_search_art_index
 from user.search.search import get_search_index as get_user_search_index
 from user.search.search import init_for_search_user, search_user
 from user.search.search import update_search_index as update_search_user_index
+from util.log import WithLog
 
 search = APIRouter(prefix="/search")
 
@@ -29,7 +30,12 @@ async def get_search_art_index_route():
 
 @search.post("/art/index")
 async def update_search_art_index_route(background_tasks: BackgroundTasks):
-    background_tasks.add_task(update_search_art_index)
+    def update():
+        with WithLog("update search art index"):
+            with WithLog("update index"):
+                update_search_art_index()
+                init_for_search_user()
+    background_tasks.add_task(update)
     return {
         "msg": "OK . update started (not finished) .",
     }
