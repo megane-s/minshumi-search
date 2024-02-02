@@ -14,7 +14,7 @@ from util.log import WithLog
 
 def update_search_index():
     with WithLog("update search index"):
-        index = {}
+        index: dict[str, list[str]] = {}
         for art in ArtsIter():
             art: Art = art
             words = _split_art_words(art)
@@ -31,7 +31,7 @@ def update_search_index():
 
 def _split_art_words(art: Art):
     result = []
-    result += [art.art_id]
+    result += [art.art_id, art.title]
     result += split_text(art.title)
     result += split_by_ngrams(art.title)
     result += art.tags
@@ -48,8 +48,9 @@ def init_for_search_art():
 
 def load_search_index():
     global _search_index
-    with open("./tmp/search/art/index", "rb") as f:
-        _search_index = joblib.load(f)
+    with WithLog("load search art index"):
+        with open("./tmp/search/art/index", "rb") as f:
+            _search_index = joblib.load(f)
 
 
 def get_search_index():
