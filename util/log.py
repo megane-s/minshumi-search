@@ -17,7 +17,7 @@ class WithLog:
         label: str,
         print_log: bool = True,
         print_time: bool = True,
-        start_label: str = "⭐️ start ::",
+        start_label: str = "⭐️ start  ::",
         end_label: str = "✅ finish ::",
         indent_text: str = "| ",
     ) -> None:
@@ -57,7 +57,7 @@ class WithLog:
                     self.indent_text * (self.depth) +
                     self.end_label,
                     self.label,
-                    f"time={self.end_time - self.start_time}s",
+                    f"time={int((self.end_time - self.start_time)*10000)/10000}s",
                 )
             else:
                 print(
