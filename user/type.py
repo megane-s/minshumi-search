@@ -17,7 +17,7 @@ class User:
     name: str
     interest_tags: list[str]
     art_appeals: list[ArtAppeal]
-    watching_arts: list[Art]
+    watching_art_ids: list[str]
 
 
 @dataclass

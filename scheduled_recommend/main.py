@@ -37,7 +37,7 @@ for user in UsersIter():
         with WithLog(f"scheduled recommend : user={user.name}(userId={user.id})") as logger:
             logger.print(f"interest tags=({' , '.join(user.interest_tags)})")
             with WithLog("get recommends") as logger:
-                recommend_results = get_recommendations(user, limit=5)
+                recommend_results = get_recommendations(user, limit=3)
                 if recommend_results is None:
                     continue
                 logger.print("recommend_results", "user", user.id, "results", [

@@ -29,7 +29,7 @@ class DbUser(Base):
             name=self.name,  # type: ignore
             interest_tags=[row.tag for row in self.interestTags],
             art_appeals=[row.to_art_appeal() for row in self.artAppeals],
-            watching_arts=[art for art in self.watchingArts]
+            watching_art_ids=[art.artId for art in self.watchingArts]
         )
 
 

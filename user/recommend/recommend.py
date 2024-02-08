@@ -42,8 +42,8 @@ def recommend_iter(user: User):
         for art in recommend_result:
             yield art
 
-    for art in user.watching_arts:
-        recommend_result = get_recommend_art_by_art_id(art.art_id)
+    for art_id in user.watching_art_ids:
+        recommend_result = get_recommend_art_by_art_id(art_id)
         if recommend_result is None:
             continue
         for art in recommend_result:
