@@ -54,7 +54,7 @@ class DbArtAppeal(Base):
 
 
 class DbWatchingArt(Base):
-    __tablename__ = "ArtAppeal"
+    __tablename__ = "WatchingArt"
     userId = Column(String, ForeignKey(DbUser.id), primary_key=True)
     artId = Column(String, ForeignKey(DbArt.artId), primary_key=True)
 
